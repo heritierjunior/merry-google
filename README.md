@@ -15,7 +15,7 @@ Ajoutez l'origine de votre serveur local aux **Authorized JavaScript origins** d
 
 ## Publier dans le dépôt GitHub
 
-Le dépôt `heritierjunior/merry-google` montré dans la capture est vide. Placez les fichiers `index.html`, `home.html` et ce `README.md` à la racine d'un clone local du dépôt, puis exécutez depuis ce dossier :
+Les fichiers `index.html`, `home.html` et `README.md` sont publiés à la racine du dépôt [`heritierjunior/merry-google`](https://github.com/heritierjunior/merry-google). Pour envoyer des modifications ultérieures depuis un clone local du dépôt, exécutez :
 
 ```powershell
 git add index.html home.html README.md
