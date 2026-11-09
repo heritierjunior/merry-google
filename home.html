@@ -1,0 +1,800 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f5f7fb">
+  <title>Mon profil professionnel</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      color-scheme: light;
+      font-family: "DM Sans", sans-serif;
+      color: #1b2940;
+      background: #f4f6fa;
+      font-synthesis: none;
+      text-rendering: optimizeLegibility;
+      -webkit-font-smoothing: antialiased;
+      --blue: #526bdb;
+      --muted: #8290a5;
+      --line: #e9edf3;
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body { min-width: 320px; margin: 0; background: #f4f6fa; }
+    button, input, textarea { font: inherit; }
+    button { cursor: pointer; }
+
+    .topbar {
+      position: sticky;
+      z-index: 5;
+      top: 0;
+      display: flex;
+      height: 72px;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 max(28px, calc((100vw - 1300px) / 2));
+      border-bottom: 1px solid rgba(230, 234, 241, .9);
+      background: rgba(255, 255, 255, .93);
+      backdrop-filter: blur(14px);
+    }
+
+    .brand {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      color: #1b2940;
+      font-family: Manrope, sans-serif;
+      font-size: 14px;
+      font-weight: 800;
+      text-decoration: none;
+    }
+
+    .brand-mark {
+      display: grid;
+      width: 35px;
+      height: 35px;
+      place-items: center;
+      border-radius: 11px;
+      background: var(--blue);
+      color: white;
+    }
+
+    .brand-mark svg { width: 20px; height: 20px; }
+    .top-actions { display: flex; align-items: center; gap: 16px; }
+    .account-label { color: #708098; font-size: 12px; }
+
+    .signout {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 9px 13px;
+      border: 1px solid #e2e7ef;
+      border-radius: 9px;
+      background: white;
+      color: #526078;
+      font-size: 12px;
+      font-weight: 600;
+    }
+
+    .signout:hover { border-color: #cbd4e4; background: #f9faff; }
+    .signout svg { width: 15px; height: 15px; }
+
+    .layout {
+      display: grid;
+      width: min(1280px, calc(100% - 56px));
+      grid-template-columns: 244px minmax(0, 1fr);
+      gap: 25px;
+      margin: 30px auto 64px;
+      align-items: start;
+    }
+
+    .sidebar, .card, .hero {
+      border: 1px solid #e9edf3;
+      border-radius: 15px;
+      background: white;
+      box-shadow: 0 5px 20px rgba(35, 54, 91, .035);
+    }
+
+    .sidebar { position: sticky; top: 96px; padding: 23px 16px 17px; }
+    .side-profile { padding: 4px 7px 19px; text-align: center; }
+    .avatar-wrap { position: relative; display: inline-block; }
+
+    .avatar {
+      display: grid;
+      width: 79px;
+      height: 79px;
+      overflow: hidden;
+      place-items: center;
+      border: 4px solid white;
+      border-radius: 50%;
+      background: #e9edff;
+      box-shadow: 0 0 0 1px #e1e6f0;
+      color: #536bd5;
+      font-family: Manrope, sans-serif;
+      font-size: 26px;
+      font-weight: 800;
+    }
+
+    .avatar img { width: 100%; height: 100%; object-fit: cover; }
+
+    .online-mark {
+      position: absolute;
+      right: 3px;
+      bottom: 4px;
+      width: 13px;
+      height: 13px;
+      border: 2px solid white;
+      border-radius: 50%;
+      background: #32b989;
+    }
+
+    .side-name {
+      overflow: hidden;
+      margin: 12px 0 4px;
+      font-family: Manrope, sans-serif;
+      font-size: 14px;
+      font-weight: 800;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .side-role { margin: 0; color: var(--muted); font-size: 11px; line-height: 1.6; }
+    .profile-status { display: inline-flex; align-items: center; gap: 6px; margin-top: 12px; color: #299b79; font-size: 10px; font-weight: 600; }
+    .profile-status::before { width: 6px; height: 6px; border-radius: 50%; background: #36ba91; content: ""; }
+
+    .nav-label {
+      padding: 13px 10px 8px;
+      color: #a0a9b8;
+      font-size: 9px;
+      font-weight: 700;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+    }
+
+    .side-nav { display: grid; gap: 3px; }
+
+    .side-nav a {
+      display: flex;
+      align-items: center;
+      gap: 11px;
+      padding: 10px;
+      border-radius: 8px;
+      color: #697891;
+      font-size: 12px;
+      font-weight: 500;
+      text-decoration: none;
+      transition: background .15s, color .15s;
+    }
+
+    .side-nav a:hover, .side-nav a.active { background: #f0f2ff; color: #4a60c5; }
+    .side-nav svg { width: 16px; height: 16px; }
+
+    .edit-sidebar {
+      display: flex;
+      width: 100%;
+      justify-content: center;
+      margin-top: 18px;
+      padding: 10px;
+      border: 0;
+      border-radius: 8px;
+      background: #536ada;
+      color: white;
+      font-size: 11px;
+      font-weight: 700;
+    }
+
+    .edit-sidebar:hover, .primary-button:hover { background: #435bc7; }
+    .content { min-width: 0; }
+
+    .welcome-row {
+      display: flex;
+      align-items: end;
+      justify-content: space-between;
+      gap: 18px;
+      margin: 1px 2px 17px;
+    }
+
+    .welcome-label { margin: 0 0 5px; color: #8793a7; font-size: 11px; }
+
+    h1, h2, h3, p { margin-top: 0; }
+    h1 { margin-bottom: 0; font-family: Manrope, sans-serif; font-size: clamp(23px, 3vw, 31px); font-weight: 800; letter-spacing: -1.2px; }
+    .welcome-date { color: #929eb0; font-size: 11px; }
+
+    .hero {
+      position: relative;
+      overflow: hidden;
+      min-height: 244px;
+      padding: 31px 34px 29px;
+      border: 0;
+      background: linear-gradient(115deg, #3f56bd 0%, #586bd6 52%, #7772df 100%);
+      color: white;
+    }
+
+    .hero::after {
+      position: absolute;
+      top: -155px;
+      right: -72px;
+      width: 350px;
+      height: 350px;
+      border: 1px solid rgba(255,255,255,.15);
+      border-radius: 50%;
+      box-shadow: 0 0 0 38px rgba(255,255,255,.035), 0 0 0 78px rgba(255,255,255,.028);
+      content: "";
+      pointer-events: none;
+    }
+
+    .hero-content { position: relative; z-index: 1; max-width: 590px; }
+    .hero-kicker { margin-bottom: 11px; color: #d7ddff; font-size: 10px; font-weight: 700; letter-spacing: 1.4px; text-transform: uppercase; }
+    .hero h2 { margin: 0 0 8px; font-family: Manrope, sans-serif; font-size: clamp(23px, 3vw, 31px); font-weight: 800; letter-spacing: -.9px; }
+    .hero p { max-width: 500px; margin-bottom: 19px; color: #e4e8ff; font-size: 12px; line-height: 1.8; }
+    .hero-meta { display: flex; flex-wrap: wrap; gap: 9px; }
+
+    .meta-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 7px 10px;
+      border: 1px solid rgba(255,255,255,.18);
+      border-radius: 7px;
+      background: rgba(255,255,255,.1);
+      color: #f1f3ff;
+      font-size: 10px;
+    }
+
+    .meta-chip svg { width: 13px; height: 13px; }
+    .section-heading { display: flex; align-items: center; justify-content: space-between; gap: 15px; margin: 27px 2px 13px; }
+    .section-heading h2 { margin: 0; font-family: Manrope, sans-serif; font-size: 16px; font-weight: 800; letter-spacing: -.3px; }
+    .section-heading > span { color: #929eb0; font-size: 10px; }
+    .primary-button { padding: 9px 12px; border: 0; border-radius: 8px; background: #526bdb; color: white; font-size: 10px; font-weight: 700; }
+
+    .stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+
+    .stat-card {
+      display: flex;
+      min-width: 0;
+      align-items: center;
+      gap: 12px;
+      padding: 15px;
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      background: white;
+    }
+
+    .stat-icon { display: grid; width: 37px; height: 37px; flex: 0 0 37px; place-items: center; border-radius: 11px; background: #f0f2ff; color: #596ed5; }
+    .stat-icon.green { background: #eaf8f3; color: #32a884; }
+    .stat-icon.gold { background: #fff5e7; color: #d39332; }
+    .stat-icon svg { width: 18px; height: 18px; }
+    .stat-value { overflow: hidden; margin: 0 0 3px; color: #263650; font-family: Manrope, sans-serif; font-size: 13px; font-weight: 800; text-overflow: ellipsis; white-space: nowrap; }
+    .stat-label { margin: 0; color: #909bae; font-size: 9px; }
+    .two-columns { display: grid; grid-template-columns: 1fr 1fr; gap: 13px; }
+    .card { min-width: 0; padding: 19px; }
+    .card-title { display: flex; align-items: center; gap: 9px; margin: 0 0 13px; font-family: Manrope, sans-serif; font-size: 13px; font-weight: 800; }
+    .card-title svg { width: 17px; height: 17px; color: #596ed5; }
+    .about-text { margin: 0; color: #75839a; font-size: 11px; line-height: 1.9; white-space: pre-line; }
+    .skill-list { display: flex; flex-wrap: wrap; gap: 7px; }
+
+    .skill-tag {
+      padding: 7px 10px;
+      border: 1px solid #e8ebf3;
+      border-radius: 7px;
+      background: #fafbfe;
+      color: #64728a;
+      font-size: 10px;
+      font-weight: 500;
+    }
+
+    .journey { display: grid; gap: 15px; }
+    .journey-item { position: relative; display: grid; grid-template-columns: 14px minmax(0, 1fr); gap: 10px; }
+    .journey-item:not(:last-child)::after { position: absolute; top: 13px; bottom: -16px; left: 5px; width: 1px; background: #e6eaf2; content: ""; }
+    .journey-dot { position: relative; z-index: 1; width: 11px; height: 11px; margin-top: 2px; border: 2px solid #8794e6; border-radius: 50%; background: white; }
+    .journey-title { margin: 0 0 4px; color: #34425a; font-size: 11px; font-weight: 700; }
+    .journey-copy { margin: 0; color: #929db0; font-size: 10px; line-height: 1.6; }
+    .project-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+    .project-card { overflow: hidden; border: 1px solid var(--line); border-radius: 12px; background: white; }
+
+    .project-art {
+      display: grid;
+      height: 89px;
+      place-items: center;
+      background: linear-gradient(135deg, #eef1ff, #dce5ff);
+      color: #6075d6;
+    }
+
+    .project-card:nth-child(2) .project-art { background: linear-gradient(135deg, #e6f7f2, #d5f0e9); color: #3b9c84; }
+    .project-card:nth-child(3) .project-art { background: linear-gradient(135deg, #fff4e5, #ffead0); color: #bf873b; }
+    .project-art svg { width: 34px; height: 34px; }
+    .project-copy { padding: 12px; }
+    .project-copy h3 { margin: 0 0 5px; color: #34425a; font-family: Manrope, sans-serif; font-size: 11px; font-weight: 800; }
+    .project-copy p { margin: 0 0 9px; color: #909bae; font-size: 9px; line-height: 1.6; }
+    .project-label { color: #7484d6; font-size: 8px; font-weight: 700; }
+
+    .contact-row { display: flex; flex-wrap: wrap; gap: 8px; }
+
+    .contact-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      padding: 9px 11px;
+      border: 1px solid #e9edf3;
+      border-radius: 8px;
+      color: #63728b;
+      font-size: 10px;
+      text-decoration: none;
+    }
+
+    .contact-link:hover { border-color: #cdd5ee; color: #526bdb; }
+    .contact-link svg { width: 14px; height: 14px; }
+    .bottom-note { margin: 18px 0 0; color: #a0a9b7; font-size: 9px; text-align: center; }
+
+    .modal {
+      position: fixed;
+      z-index: 20;
+      inset: 0;
+      display: none;
+      overflow-y: auto;
+      align-items: center;
+      justify-content: center;
+      padding: 22px;
+      background: rgba(22, 32, 52, .48);
+      backdrop-filter: blur(4px);
+    }
+
+    .modal.open { display: flex; }
+
+    .modal-card {
+      width: min(100%, 530px);
+      padding: 25px;
+      border: 1px solid #e7ebf2;
+      border-radius: 16px;
+      background: white;
+      box-shadow: 0 25px 80px rgba(20, 33, 63, .22);
+    }
+
+    .modal-heading { display: flex; align-items: flex-start; justify-content: space-between; gap: 15px; margin-bottom: 21px; }
+    .modal-heading h2 { margin: 0 0 5px; font-family: Manrope, sans-serif; font-size: 19px; font-weight: 800; }
+    .modal-heading p { margin: 0; color: #8490a2; font-size: 11px; line-height: 1.6; }
+
+    .close-button {
+      display: grid;
+      width: 31px;
+      height: 31px;
+      flex: 0 0 31px;
+      place-items: center;
+      border: 1px solid #e7ebf2;
+      border-radius: 8px;
+      background: white;
+      color: #758198;
+    }
+
+    .close-button svg { width: 15px; height: 15px; }
+    .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+    .field { display: grid; gap: 6px; }
+    .field.full { grid-column: 1 / -1; }
+    .field label { color: #56647b; font-size: 10px; font-weight: 700; }
+    .field input, .field textarea { width: 100%; padding: 10px 11px; border: 1px solid #e3e8f0; border-radius: 8px; outline: none; background: #fcfdff; color: #2b3b56; font-size: 11px; }
+    .field input:focus, .field textarea:focus { border-color: #94a1ec; box-shadow: 0 0 0 3px #eef0ff; }
+    .field textarea { min-height: 96px; resize: vertical; line-height: 1.6; }
+    .form-help { margin: 0; color: #a0a9b7; font-size: 9px; }
+    .modal-actions { display: flex; justify-content: flex-end; gap: 9px; margin-top: 20px; }
+    .secondary-button { padding: 9px 13px; border: 1px solid #e2e7ef; border-radius: 8px; background: white; color: #69778d; font-size: 10px; font-weight: 600; }
+    .toast { position: fixed; z-index: 30; right: 22px; bottom: 22px; padding: 12px 16px; transform: translateY(14px); border-radius: 10px; background: #213552; box-shadow: 0 8px 25px rgba(20,33,63,.18); color: white; font-size: 11px; opacity: 0; pointer-events: none; transition: .2s ease; }
+    .toast.visible { transform: translateY(0); opacity: 1; }
+
+    @media (max-width: 940px) {
+      .layout { grid-template-columns: 205px minmax(0, 1fr); gap: 17px; }
+      .sidebar { padding-right: 12px; padding-left: 12px; }
+      .stats { gap: 8px; }
+      .stat-card { gap: 9px; padding: 12px 10px; }
+      .stat-icon { width: 32px; height: 32px; flex-basis: 32px; }
+      .two-columns { grid-template-columns: 1fr; }
+    }
+
+    @media (max-width: 680px) {
+      .topbar { height: 62px; padding: 0 17px; }
+      .brand { font-size: 12px; }
+      .account-label { display: none; }
+      .layout { display: block; width: calc(100% - 30px); margin: 21px auto 42px; }
+      .sidebar { position: static; margin-bottom: 18px; padding: 10px; }
+      .side-profile { display: flex; align-items: center; gap: 11px; padding: 3px; text-align: left; }
+      .avatar { width: 46px; height: 46px; border-width: 2px; font-size: 16px; }
+      .side-name { margin: 0 0 3px; font-size: 12px; }
+      .side-role { font-size: 10px; }
+      .profile-status { display: none; }
+      .nav-label { display: none; }
+      .side-nav { display: flex; overflow-x: auto; gap: 4px; padding-top: 9px; border-top: 1px solid #edf0f5; }
+      .side-nav a { flex: 0 0 auto; gap: 6px; padding: 8px; font-size: 10px; }
+      .side-nav svg { width: 14px; height: 14px; }
+      .edit-sidebar { margin-top: 7px; padding: 8px; }
+      .welcome-row { align-items: center; }
+      .welcome-date { display: none; }
+      .hero { min-height: 0; padding: 25px 22px; }
+      .stats { grid-template-columns: 1fr; }
+      .stat-card { padding: 11px 13px; }
+      .stat-value { font-size: 12px; }
+      .project-grid { grid-template-columns: 1fr; }
+      .project-card { display: grid; grid-template-columns: 102px 1fr; }
+      .project-art { height: 100%; min-height: 92px; }
+      .project-copy { align-self: center; }
+      .card { padding: 16px; }
+      .section-heading { margin-top: 22px; }
+    }
+
+    @media (max-width: 390px) {
+      .form-grid { grid-template-columns: 1fr; }
+      .field.full { grid-column: auto; }
+      .topbar { padding: 0 12px; }
+      .brand { gap: 7px; font-size: 11px; }
+      .signout { gap: 5px; padding: 8px; font-size: 10px; }
+      .layout { width: calc(100% - 22px); }
+      .side-nav a { padding: 7px 6px; font-size: 9px; }
+    }
+  </style>
+</head>
+<body>
+  <header class="topbar">
+    <a class="brand" href="#accueil">
+      <span class="brand-mark" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none"><path d="M5 18V6h3l4 6 4-6h3v12h-3v-7l-4 5-4-5v7H5Z" fill="currentColor"/></svg></span>
+      Mon espace professionnel
+    </a>
+    <div class="top-actions">
+      <span class="account-label" id="account-email"></span>
+      <button class="signout" type="button" id="signout-button">
+        <svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M8 3H4.5A1.5 1.5 0 0 0 3 4.5v11A1.5 1.5 0 0 0 4.5 17H8m3-3 4-4-4-4m4 4H7" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        Se déconnecter
+      </button>
+    </div>
+  </header>
+
+  <main class="layout" id="accueil">
+    <aside class="sidebar" aria-label="Navigation du profil">
+      <div class="side-profile">
+        <span class="avatar-wrap">
+          <span class="avatar" id="sidebar-avatar" aria-hidden="true"></span>
+          <span class="online-mark" aria-hidden="true"></span>
+        </span>
+        <div class="side-identity">
+          <p class="side-name" id="sidebar-name"></p>
+          <p class="side-role" id="sidebar-role"></p>
+          <span class="profile-status">Profil actif</span>
+        </div>
+      </div>
+      <div class="nav-label">Mon espace</div>
+      <nav class="side-nav">
+        <a class="active" href="#accueil"><svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M3 9.2 10 3l7 6.2v7.3a.5.5 0 0 1-.5.5h-4v-5H7.5v5h-4a.5.5 0 0 1-.5-.5V9.2Z" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/></svg>Vue d'ensemble</a>
+        <a href="#apropos"><svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><circle cx="10" cy="10" r="7" stroke="currentColor" stroke-width="1.4"/><path d="M10 9v4m0-6h.01" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>À propos</a>
+        <a href="#parcours"><svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M3 5.5h14M5.5 3v5m9-5v5M4 8h12v8.5H4V8Z" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>Mon parcours</a>
+        <a href="#projets"><svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><rect x="3" y="3" width="14" height="14" rx="2" stroke="currentColor" stroke-width="1.4"/><path d="M6.5 7h7m-7 3h7m-7 3h4" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>Mes projets</a>
+        <a href="#contact"><svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><rect x="3" y="4.5" width="14" height="11" rx="2" stroke="currentColor" stroke-width="1.4"/><path d="m4 6 6 4.5L16 6" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>Contact</a>
+      </nav>
+      <button class="edit-sidebar" type="button" data-edit>Personnaliser mon profil</button>
+    </aside>
+
+    <div class="content">
+      <div class="welcome-row">
+        <div>
+          <p class="welcome-label">Votre espace personnel</p>
+          <h1 id="welcome-heading">Bonjour !</h1>
+        </div>
+        <span class="welcome-date" id="current-date"></span>
+      </div>
+
+      <section class="hero" aria-labelledby="hero-name">
+        <div class="hero-content">
+          <p class="hero-kicker">Profil professionnel</p>
+          <h2 id="hero-name"></h2>
+          <p id="hero-bio"></p>
+          <div class="hero-meta">
+            <span class="meta-chip" id="hero-role"></span>
+            <span class="meta-chip" id="hero-location"></span>
+            <span class="meta-chip" id="hero-email"></span>
+          </div>
+        </div>
+      </section>
+
+      <div class="section-heading">
+        <h2>Mon profil en bref</h2>
+        <span>Vos informations professionnelles</span>
+      </div>
+      <section class="stats" aria-label="Résumé du profil">
+        <article class="stat-card">
+          <span class="stat-icon"><svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M4 16.5h12m-10.5-2V5.8L10 3l4.5 2.8v8.7m-6.7 2v-4h4.4v4M7.3 7.8h.1m2.5 0h.1m2.5 0h.1m-5.2 2.4h.1m2.5 0h.1m2.5 0h.1" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+          <div><p class="stat-value" id="stat-role"></p><p class="stat-label">Poste professionnel</p></div>
+        </article>
+        <article class="stat-card">
+          <span class="stat-icon green"><svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M16 8.2c0 4.5-6 8.3-6 8.3S4 12.7 4 8.2a6 6 0 1 1 12 0Z" stroke="currentColor" stroke-width="1.4"/><circle cx="10" cy="8" r="2" stroke="currentColor" stroke-width="1.4"/></svg></span>
+          <div><p class="stat-value" id="stat-location"></p><p class="stat-label">Localisation</p></div>
+        </article>
+        <article class="stat-card">
+          <span class="stat-icon gold"><svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M3 15.5 7.2 11l3 2.5L17 6m-5 0h5v5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+          <div><p class="stat-value" id="stat-skills"></p><p class="stat-label">Compétences présentées</p></div>
+        </article>
+      </section>
+
+      <div class="section-heading" id="apropos">
+        <h2>Qui suis-je ?</h2>
+        <button class="primary-button" type="button" data-edit>Modifier le profil</button>
+      </div>
+      <section class="two-columns">
+        <article class="card">
+          <h3 class="card-title"><svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><circle cx="10" cy="10" r="7" stroke="currentColor" stroke-width="1.4"/><path d="M10 9v4m0-6h.01" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>À propos de moi</h3>
+          <p class="about-text" id="about-text"></p>
+        </article>
+        <article class="card">
+          <h3 class="card-title"><svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="m10 3 1.9 4.1 4.6.6-3.4 3.2.9 4.6-4-2.3-4 2.3.8-4.6-3.3-3.2 4.6-.6L10 3Z" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round"/></svg>Mes compétences</h3>
+          <div class="skill-list" id="skill-list"></div>
+        </article>
+      </section>
+
+      <div class="section-heading" id="parcours">
+        <h2>Expérience & formation</h2>
+        <span>Les étapes de mon parcours</span>
+      </div>
+      <section class="two-columns">
+        <article class="card">
+          <h3 class="card-title"><svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><rect x="3" y="5" width="14" height="11" rx="2" stroke="currentColor" stroke-width="1.4"/><path d="M7 5V3.5h6V5m-10 4h14m-9 0v2h4V9" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/></svg>Expériences professionnelles</h3>
+          <div class="journey">
+            <div class="journey-item"><span class="journey-dot"></span><div><p class="journey-title">Ajoutez votre expérience la plus récente</p><p class="journey-copy">Intitulé du poste · Entreprise · Année</p></div></div>
+            <div class="journey-item"><span class="journey-dot"></span><div><p class="journey-title">Présentez une expérience précédente</p><p class="journey-copy">Vos responsabilités et vos réalisations marquantes</p></div></div>
+          </div>
+        </article>
+        <article class="card">
+          <h3 class="card-title"><svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M10 3 2.5 7l7.5 4 7.5-4L10 3Zm-5.5 7v4.2L10 17l5.5-2.8V10M18 7v5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>Formation & certifications</h3>
+          <div class="journey">
+            <div class="journey-item"><span class="journey-dot"></span><div><p class="journey-title">Ajoutez votre formation</p><p class="journey-copy">Diplôme ou certification · Établissement · Année</p></div></div>
+            <div class="journey-item"><span class="journey-dot"></span><div><p class="journey-title">Mettez en avant un apprentissage récent</p><p class="journey-copy">Cours, certification ou compétence acquise</p></div></div>
+          </div>
+        </article>
+      </section>
+
+      <div class="section-heading" id="projets">
+        <h2>Projets à mettre en valeur</h2>
+        <span>Remplacez ces exemples par vos réalisations</span>
+      </div>
+      <section class="project-grid" aria-label="Exemples de projets à personnaliser">
+        <article class="project-card">
+          <div class="project-art" aria-hidden="true"><svg viewBox="0 0 40 40" fill="none"><rect x="5" y="7" width="30" height="25" rx="4" stroke="currentColor" stroke-width="2"/><path d="M5 13h30M11 10h.1m4 0h.1m4 0h.1M12 21h7m-7 5h15" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></div>
+          <div class="project-copy"><h3>Portfolio web</h3><p>Présentez votre site, vos outils et la valeur apportée à ses utilisateurs.</p><span class="project-label">EXEMPLE À PERSONNALISER</span></div>
+        </article>
+        <article class="project-card">
+          <div class="project-art" aria-hidden="true"><svg viewBox="0 0 40 40" fill="none"><rect x="10" y="5" width="20" height="30" rx="4" stroke="currentColor" stroke-width="2"/><path d="M15 11h10m-10 5h10m-10 5h6m-3 9h.1" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></div>
+          <div class="project-copy"><h3>Application numérique</h3><p>Décrivez un projet, ses fonctionnalités clés et votre contribution.</p><span class="project-label">EXEMPLE À PERSONNALISER</span></div>
+        </article>
+        <article class="project-card">
+          <div class="project-art" aria-hidden="true"><svg viewBox="0 0 40 40" fill="none"><path d="M6 31V20m9 11V11m10 20V16m9 15V7M4 34h32" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+          <div class="project-copy"><h3>Projet d'équipe</h3><p>Ajoutez le contexte, votre rôle et un résultat concret obtenu ensemble.</p><span class="project-label">EXEMPLE À PERSONNALISER</span></div>
+        </article>
+      </section>
+
+      <div class="section-heading" id="contact">
+        <h2>Restons en contact</h2>
+        <button class="primary-button" type="button" data-edit>Ajouter mes liens</button>
+      </div>
+      <section class="card">
+        <div class="contact-row" id="contact-links"></div>
+      </section>
+      <p class="bottom-note">Les modifications du profil sont enregistrées sur cet appareil.</p>
+    </div>
+  </main>
+
+  <div class="modal" id="edit-modal" role="dialog" aria-modal="true" aria-labelledby="edit-title">
+    <div class="modal-card">
+      <div class="modal-heading">
+        <div><h2 id="edit-title">Personnalisez votre profil</h2><p>Complétez les informations qui vous représentent.</p></div>
+        <button class="close-button" id="close-modal" type="button" aria-label="Fermer"><svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="m5 5 10 10M15 5 5 15" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg></button>
+      </div>
+      <form id="profile-form">
+        <div class="form-grid">
+          <div class="field full"><label for="field-role">Titre professionnel</label><input id="field-role" name="role" maxlength="80" placeholder="Ex. Développeur web & solutions numériques"></div>
+          <div class="field"><label for="field-location">Ville / pays</label><input id="field-location" name="location" maxlength="60" placeholder="Ex. Kinshasa, RDC"></div>
+          <div class="field"><label for="field-phone">Téléphone (facultatif)</label><input id="field-phone" name="phone" type="tel" maxlength="30" placeholder="+243 ..."></div>
+          <div class="field full"><label for="field-bio">Présentation professionnelle</label><textarea id="field-bio" name="bio" maxlength="500" placeholder="Présentez votre expertise, votre approche et la valeur que vous apportez."></textarea></div>
+          <div class="field full"><label for="field-skills">Compétences</label><input id="field-skills" name="skills" maxlength="250" placeholder="Web, Gestion de projet, Communication"><p class="form-help">Séparez chaque compétence par une virgule.</p></div>
+          <div class="field"><label for="field-linkedin">Profil LinkedIn (URL)</label><input id="field-linkedin" name="linkedin" type="url" maxlength="200" placeholder="https://linkedin.com/in/..."></div>
+          <div class="field"><label for="field-website">Site / portfolio (URL)</label><input id="field-website" name="website" type="url" maxlength="200" placeholder="https://..."></div>
+        </div>
+        <div class="modal-actions">
+          <button class="secondary-button" id="cancel-edit" type="button">Annuler</button>
+          <button class="primary-button" type="submit">Enregistrer mon profil</button>
+        </div>
+      </form>
+    </div>
+  </div>
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+  <script>
+    const PROFILE_KEY = "professionalProfile";
+    const CUSTOM_KEY = "professionalProfileCustom";
+    const signoutButton = document.getElementById("signout-button");
+    const modal = document.getElementById("edit-modal");
+    const form = document.getElementById("profile-form");
+    const toast = document.getElementById("toast");
+    let toastTimer;
+
+    function readStoredObject(key) {
+      try {
+        const value = JSON.parse(sessionStorage.getItem(key) || "null");
+        return value && typeof value === "object" ? value : null;
+      } catch {
+        return null;
+      }
+    }
+
+    const googleProfile = readStoredObject(PROFILE_KEY);
+    if (!googleProfile || typeof googleProfile.name !== "string" || typeof googleProfile.email !== "string") {
+      window.location.replace("index.html");
+    } else {
+      startProfile();
+    }
+
+    function startProfile() {
+      const saved = readStoredObject(CUSTOM_KEY) || {};
+      const profile = {
+        name: googleProfile.name,
+        email: googleProfile.email,
+        picture: typeof googleProfile.picture === "string" ? googleProfile.picture : "",
+        role: typeof saved.role === "string" ? saved.role : "Développeur web & solutions numériques",
+        location: typeof saved.location === "string" ? saved.location : "À compléter",
+        phone: typeof saved.phone === "string" ? saved.phone : "",
+        bio: typeof saved.bio === "string" ? saved.bio : "Passionné par la création de solutions numériques utiles et accessibles, je conçois des expériences claires qui répondent aux besoins réels. J'aime apprendre, collaborer et transformer de bonnes idées en projets concrets.",
+        skills: Array.isArray(saved.skills) ? saved.skills : ["Développement web", "HTML & CSS", "JavaScript", "Design responsive", "Git & GitHub", "Communication"],
+        linkedin: typeof saved.linkedin === "string" ? saved.linkedin : "",
+        website: typeof saved.website === "string" ? saved.website : ""
+      };
+
+      const initials = profile.name.trim().split(/\s+/).slice(0, 2).map(part => part.charAt(0)).join("").toUpperCase();
+      const sidebarAvatar = document.getElementById("sidebar-avatar");
+      sidebarAvatar.textContent = initials || "P";
+
+      if (profile.picture) {
+        const image = new Image();
+        image.alt = "";
+        image.referrerPolicy = "no-referrer";
+        image.addEventListener("load", () => {
+          sidebarAvatar.textContent = "";
+          sidebarAvatar.append(image);
+        }, { once: true });
+        image.src = profile.picture;
+      }
+
+      document.getElementById("sidebar-name").textContent = profile.name;
+      document.getElementById("sidebar-role").textContent = profile.role;
+      document.getElementById("account-email").textContent = profile.email;
+      document.getElementById("welcome-heading").textContent = `Bonjour, ${googleProfile.givenName || profile.name.split(" ")[0]} !`;
+      document.getElementById("current-date").textContent = new Intl.DateTimeFormat("fr-FR", { dateStyle: "long" }).format(new Date());
+      document.getElementById("hero-name").textContent = profile.name;
+      document.getElementById("hero-bio").textContent = profile.bio;
+      document.getElementById("hero-role").innerHTML = `<svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M3 8h14v9H3V8Zm4 0V5h6v3m-10 4h14m-8 0v2h2v-2" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round"/></svg><span></span>`;
+      document.getElementById("hero-role").lastElementChild.textContent = profile.role;
+      document.getElementById("hero-location").innerHTML = `<svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M16 8c0 4.5-6 8.3-6 8.3S4 12.5 4 8a6 6 0 1 1 12 0Z" stroke="currentColor" stroke-width="1.3"/><circle cx="10" cy="8" r="2" stroke="currentColor" stroke-width="1.3"/></svg><span></span>`;
+      document.getElementById("hero-location").lastElementChild.textContent = profile.location;
+      document.getElementById("hero-email").innerHTML = `<svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><rect x="3" y="4.5" width="14" height="11" rx="2" stroke="currentColor" stroke-width="1.3"/><path d="m4 6 6 4.5L16 6" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg><span></span>`;
+      document.getElementById("hero-email").lastElementChild.textContent = profile.email;
+      document.getElementById("stat-role").textContent = profile.role;
+      document.getElementById("stat-location").textContent = profile.location;
+      document.getElementById("stat-skills").textContent = String(profile.skills.length).padStart(2, "0");
+      document.getElementById("about-text").textContent = profile.bio;
+
+      const skillList = document.getElementById("skill-list");
+      skillList.replaceChildren();
+      profile.skills.forEach(skill => {
+        const tag = document.createElement("span");
+        tag.className = "skill-tag";
+        tag.textContent = skill;
+        skillList.append(tag);
+      });
+
+      renderContactLinks(profile);
+      fillForm(profile);
+
+      function renderContactLinks(values) {
+        const contactLinks = document.getElementById("contact-links");
+        contactLinks.replaceChildren();
+        const items = [
+          { label: values.email, href: `mailto:${values.email}`, icon: "mail" },
+          ...(values.phone ? [{ label: values.phone, href: `tel:${values.phone}`, icon: "phone" }] : []),
+          ...(values.linkedin ? [{ label: "LinkedIn", href: values.linkedin, icon: "link" }] : []),
+          ...(values.website ? [{ label: "Portfolio", href: values.website, icon: "globe" }] : [])
+        ];
+
+        for (const item of items) {
+          const link = document.createElement("a");
+          link.className = "contact-link";
+          link.href = item.href;
+          if (item.icon === "mail") {
+            link.innerHTML = '<svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><rect x="3" y="4.5" width="14" height="11" rx="2" stroke="currentColor" stroke-width="1.4"/><path d="m4 6 6 4.5L16 6" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>';
+          } else if (item.icon === "phone") {
+            link.innerHTML = '<svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M6.5 3.5h-2a1 1 0 0 0-1 1c0 7.2 5.8 13 13 13a1 1 0 0 0 1-1v-2l-3.5-2-2 2a11 11 0 0 1-5.5-5.5l2-2-2-3.5Z" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round"/></svg>';
+          } else if (item.icon === "link") {
+            link.innerHTML = '<svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M8 12 12 8m-5 6H5a3 3 0 0 1 0-6h3m4-2h3a3 3 0 1 1 0 6h-3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>';
+          } else {
+            link.innerHTML = '<svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><circle cx="10" cy="10" r="7" stroke="currentColor" stroke-width="1.4"/><path d="M3.5 10h13M10 3c1.8 1.9 2.6 4.2 2.6 7s-.8 5.1-2.6 7c-1.8-1.9-2.6-4.2-2.6-7S8.2 4.9 10 3Z" stroke="currentColor" stroke-width="1.2"/></svg>';
+            link.target = "_blank";
+            link.rel = "noopener noreferrer";
+          }
+          const label = document.createElement("span");
+          label.textContent = item.label;
+          link.append(label);
+          contactLinks.append(link);
+        }
+      }
+
+      function fillForm(values) {
+        form.elements.role.value = values.role;
+        form.elements.location.value = values.location === "À compléter" ? "" : values.location;
+        form.elements.phone.value = values.phone;
+        form.elements.bio.value = values.bio;
+        form.elements.skills.value = values.skills.join(", ");
+        form.elements.linkedin.value = values.linkedin;
+        form.elements.website.value = values.website;
+      }
+
+      function showToast(message) {
+        toast.textContent = message;
+        toast.classList.add("visible");
+        window.clearTimeout(toastTimer);
+        toastTimer = window.setTimeout(() => toast.classList.remove("visible"), 2600);
+      }
+
+      function openEditor() {
+        modal.classList.add("open");
+        form.elements.role.focus();
+      }
+
+      function closeEditor() {
+        modal.classList.remove("open");
+      }
+
+      document.querySelectorAll("[data-edit]").forEach(button => button.addEventListener("click", openEditor));
+      document.getElementById("close-modal").addEventListener("click", closeEditor);
+      document.getElementById("cancel-edit").addEventListener("click", closeEditor);
+      modal.addEventListener("click", event => {
+        if (event.target === modal) closeEditor();
+      });
+      document.addEventListener("keydown", event => {
+        if (event.key === "Escape" && modal.classList.contains("open")) closeEditor();
+      });
+
+      form.addEventListener("submit", event => {
+        event.preventDefault();
+        const skills = form.elements.skills.value.split(",").map(skill => skill.trim()).filter(Boolean).slice(0, 20);
+        const linkedin = form.elements.linkedin.value.trim();
+        const website = form.elements.website.value.trim();
+        const custom = {
+          role: form.elements.role.value.trim() || "Professionnel·le indépendant·e",
+          location: form.elements.location.value.trim() || "À compléter",
+          phone: form.elements.phone.value.trim(),
+          bio: form.elements.bio.value.trim() || "Ajoutez une courte présentation pour aider les visiteurs à découvrir votre parcours professionnel.",
+          skills,
+          linkedin,
+          website
+        };
+
+        try {
+          localStorage.setItem(CUSTOM_KEY, JSON.stringify(custom));
+          closeEditor();
+          window.location.reload();
+        } catch {
+          showToast("Impossible d'enregistrer : le stockage local est indisponible.");
+        }
+      });
+
+      signoutButton.addEventListener("click", () => {
+        sessionStorage.removeItem(PROFILE_KEY);
+        if (window.google?.accounts?.id) google.accounts.id.disableAutoSelect();
+        window.location.replace("index.html");
+      });
+
+      document.querySelectorAll(".side-nav a").forEach(link => {
+        link.addEventListener("click", () => {
+          document.querySelectorAll(".side-nav a").forEach(item => item.classList.remove("active"));
+          link.classList.add("active");
+        });
+      });
+    }
+  </script>
+</body>
+</html>
